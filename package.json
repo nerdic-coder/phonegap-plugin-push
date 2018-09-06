@@ -1,5 +1,5 @@
 {
-  "name": "phonegap-plugin-push",
+  "name": "cbs-phonegap-plugin-push",
   "description": "Register and receive push notifications.",
   "types": "./types/index.d.ts",
   "version": "2.2.3",
