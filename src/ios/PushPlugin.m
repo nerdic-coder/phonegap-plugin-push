@@ -519,11 +519,34 @@
 
 - (void)hasPermission:(CDVInvokedUrlCommand *)command
 {
-    BOOL isEnabled = [[UIApplication sharedApplication] isRegisteredForRemoteNotifications];
-    NSMutableDictionary* message = [NSMutableDictionary dictionaryWithCapacity:1];
-    [message setObject:[NSNumber numberWithBool:isEnabled] forKey:@"isEnabled"];
-    CDVPluginResult *commandResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:message];
-    [self.commandDelegate sendPluginResult:commandResult callbackId:command.callbackId];
+    [[UNUserNotificationCenter currentNotificationCenter] getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+        
+        NSString* pushStatus;
+        BOOL isEnabled = NO;
+        
+        switch (settings.authorizationStatus)
+        {
+            case UNAuthorizationStatusDenied:
+            pushStatus = @"denied";
+            isEnabled = NO;
+            break;
+            case UNAuthorizationStatusNotDetermined:
+            pushStatus = @"notDetermined";
+            isEnabled = NO;
+            break;
+            case UNAuthorizationStatusProvisional:
+            case UNAuthorizationStatusAuthorized:
+            pushStatus = @"authorized";
+            isEnabled = YES;
+            break;
+        }
+        
+        NSMutableDictionary* message = [NSMutableDictionary dictionaryWithCapacity:1];
+        [message setObject:pushStatus forKey:@"pushStatus"];
+        [message setObject:[NSNumber numberWithBool:isEnabled] forKey:@"isEnabled"];
+        CDVPluginResult *commandResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:message];
+        [self.commandDelegate sendPluginResult:commandResult callbackId:command.callbackId];
+    }];
 }
 
 -(void)successWithMessage:(NSString *)myCallbackId withMsg:(NSString *)message

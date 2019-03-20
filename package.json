@@ -2,7 +2,7 @@
   "name": "cbs-phonegap-plugin-push",
   "description": "Register and receive push notifications.",
   "types": "./types/index.d.ts",
-  "version": "2.2.5",
+  "version": "2.2.6",
   "homepage": "http://github.com/phonegap/phonegap-plugin-push#readme",
   "repository": {
     "type": "git",
