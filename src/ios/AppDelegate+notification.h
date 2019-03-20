@@ -6,7 +6,7 @@
 //
 //
 
-#import "AppDelegate.h"
+#import <Cordova/AppDelegate.h>
 @import UserNotifications;
 
 extern NSString *const pushPluginApplicationDidBecomeActiveNotification;
